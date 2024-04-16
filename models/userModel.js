@@ -17,6 +17,20 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true, unique: true },
     city: { type: String, required: true },
     state: { type: String, required: true },
+    franchiseName: {
+        type: String,
+        required: true,
+    },
+    investmentRange: {
+        type: String,
+        enum: ['1 Lakh – 15 Lakh', '15 Lakh – 30 Lakh', 'Above 30 Lakh'],
+        required: true
+    },
+    onBoardingAs: {
+        type: String,
+        enum: ["Franchise Distributor", "Charging Station"],
+        required: true,
+    },
     locationImage: {
         type: String,
         default: null,

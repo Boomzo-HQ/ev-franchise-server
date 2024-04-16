@@ -38,9 +38,9 @@ const createSendToken = (user, statusCode, res) => {
 // send email regarding booking req received
 // add franchise booking details
 exports.userSignup = catchAsync(async (req, res, next) => {
-    const { name, email, phone, city, state, message } = req.body;
+    const { name, email, phone, city, state, franchiseName, investmentRange, onBoardingAs, message } = req.body;
 
-    if (!name && !email && !phone && !city && !state) {
+    if (!name && !email && !phone && !city && !state && !franchiseName && !investmentRange && !onBoardingAs) {
         return next(
             new AppError("Please provide all information for creating an account!!")
         );
@@ -65,6 +65,9 @@ exports.userSignup = catchAsync(async (req, res, next) => {
         password: generatedPassword,
         city,
         state,
+        franchiseName,
+        investmentRange,
+        onBoardingAs,
         message
     });
 
@@ -158,6 +161,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 // <--------------------- STAFF ---------------------->
 
+// make condn for only admin to create staff
 exports.staffSignup = catchAsync(async (req, res, next) => {
     const { name, email, phone, password } = req.body;
 

@@ -19,11 +19,12 @@ exports.getBookingsAccToStatus = catchAsync(async (req, res, next) => {
 
     // Find all users with the specified status
     const bookings = await UserModel.find({ status: status });
+    console.log(bookings);
 
     // Respond with the found users
     res.status(200).json({
         status: 'success',
-        results: users.length,
+        results: bookings.length,
         bookings
     });
 });
@@ -41,7 +42,7 @@ exports.updateBooking = catchAsync(async (req, res, next) => {
     const { status, locationImage } = req.body;
     const bookingID = req.params.bookingid;
 
-    if (!status || !locationImage) {
+    if (!status && !locationImage) {
         return next(new AppError("Provide sufficient information!", 400))
     }
 

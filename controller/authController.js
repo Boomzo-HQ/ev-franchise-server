@@ -154,7 +154,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     }
 
     user.password = password;
-    user.tempPassword = null;
+    // user.tempPassword = te;
 
     await user.save();
 

@@ -163,7 +163,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 
 // <--------------------- STAFF ---------------------->
-
 // make condn for only admin to create staff
 exports.staffSignup = catchAsync(async (req, res, next) => {
     const { name, email, phone, password } = req.body;
@@ -183,8 +182,6 @@ exports.staffSignup = catchAsync(async (req, res, next) => {
         password
     });
 
-    // console.log("1111111111");
-    // console.log(newStaff);
     if (!newStaff) {
         return next(new AppError("Couldnt create staff!!"))
     }

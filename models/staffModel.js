@@ -33,6 +33,8 @@ const StaffSchema = new mongoose.Schema({
         type: Date,
         select: false,
     },
+}, {
+    timestamps: true,
 });
 
 StaffSchema.pre("save", async function (next) {

@@ -19,7 +19,7 @@ exports.getBookingsAccToStatus = catchAsync(async (req, res, next) => {
 
     // Find all users with the specified status
     const bookings = await UserModel.find({ status: status });
-    console.log(bookings);
+    // console.log(bookings);
 
     // Respond with the found users
     res.status(200).json({

@@ -8,6 +8,7 @@ const AppError = require("./utils/appError");
 
 const userAuthRouter = require("./routes/userRoute");
 const staffRouter = require("./routes/staffRoute");
+const contactRouter = require("./routes/contactRoute");
 
 dotenv.config({ path: "./.env" });
 
@@ -28,7 +29,7 @@ app.use(express.json({ limit: "10kb" }));
 // routes
 app.use("/api/v1/auth", userAuthRouter);
 app.use("/api/v1/staff", staffRouter);
-
+app.use("/api/v1/contact", contactRouter);
 
 app.all("/", (req, res, next) => {
     res.send("This is the EV Franchise Booking")

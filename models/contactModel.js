@@ -11,6 +11,8 @@ const contactSchema = new mongoose.Schema({
     message: {
         type: String,
     }
+}, {
+    timestamps: true
 });
 
 // Avoid recreating model if it already exists

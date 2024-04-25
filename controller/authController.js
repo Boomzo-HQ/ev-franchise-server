@@ -36,7 +36,6 @@ const createSendToken = (user, statusCode, res) => {
 // <--------------------- USER ---------------------->
 
 // send email regarding booking req received
-// add franchise booking details
 exports.userSignup = catchAsync(async (req, res, next) => {
     const { name, email, phone, city, state, franchiseName, investmentRange, onBoardingAs, message } = req.body;
 

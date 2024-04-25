@@ -2,7 +2,7 @@ const Contact = require("../models/contactModel");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getContactRequests = catchAsync(async (req, res, next) => {
-    const contacts = await Contact.find();
+    const contacts = await Contact.find().sort("-createdAt");
 
     res.status(200).json({
         status: "success",

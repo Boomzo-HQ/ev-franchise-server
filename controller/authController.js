@@ -17,7 +17,7 @@ const createSendToken = (user, statusCode, res) => {
 
     const cookieOptions = {
         // 2 days
-        expires: new Date(Date.now() + 172800000),
+        expires: new Date(Date.now() + 2592000000),
         httpOnly: true,
     };
     if (process.env.NODE_ENV === "production") cookieOptions.secure = true;

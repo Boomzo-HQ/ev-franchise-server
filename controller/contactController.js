@@ -1,4 +1,5 @@
 const Contact = require("../models/contactModel");
+const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getContactRequests = catchAsync(async (req, res, next) => {
@@ -11,11 +12,15 @@ exports.getContactRequests = catchAsync(async (req, res, next) => {
 })
 
 exports.postContactRequest = catchAsync(async (req, res, next) => {
-    const { name, email, message } = req.body;
-    console.log(req.body);
+    const { name, email, message, phone } = req.body;
+    // console.log(req.body);
+
+    if (!name && !email && !phone && !message) {
+        return next(new AppError("Provide sufficient Information"));
+    }
 
     const contact = await Contact.create({
-        name, email, message
+        name, email, phone, message
     });
 
     if (!contact) {

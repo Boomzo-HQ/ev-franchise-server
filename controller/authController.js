@@ -6,6 +6,7 @@ const catchAsync = require("../utils/catchAsync");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const crypto = require("crypto");
+const Email = require("../utils/Email");
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -269,7 +270,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
     // 3) Send it to user's email
     try {
-        const resetURL = `https://portal.boomzo.in/reset-password/${resetToken}`
+        const resetURL = `http://localhost:5173/reset-password/${resetToken}`
 
         console.log(resetURL);
         console.log(user);

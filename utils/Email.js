@@ -9,7 +9,7 @@ module.exports = class Email {
         this.to = userEmail;
         this.userPhn = userPhn,
             this.url = url;
-        this.from = `Ev Franchise Station <grow@boomzo.in>`;
+        this.from = `Ev Franchise Station <evchargingstation.in@gmail.com>`;
     }
 
     newTransport() {

@@ -7,6 +7,13 @@ const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const crypto = require("crypto");
 
+const signToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+};
+
+
 const createSendToken = (user, statusCode, res) => {
     const token = signToken(user._id);
 
@@ -189,6 +196,7 @@ exports.staffLogin = catchAsync(async (req, res, next) => {
     if (!email || !password) {
         return next(new AppError("Please provide email and password!", 400));
     }
+
     const staff = await StaffModel.findOne({ email }).select("+password");
 
     if (!staff || !(await staff.correctPassword(password, staff.password))) {

@@ -195,16 +195,6 @@ exports.staffLogin = catchAsync(async (req, res, next) => {
         return next(new AppError("Incorrect email or password", 401));
     }
 
-    mg.messages.create('sandbox-123.mailgun.org', {
-        from: "Excited User <mailgun@sandbox-123.mailgun.org>",
-        to: [email],
-        subject: "Hello",
-        text: "Testing some Mailgun awesomeness!",
-        html: "<h1>Testing some Mailgun awesomeness!</h1>"
-    })
-        .then(msg => console.log(msg)) // logs response data
-        .catch(err => console.log(err));
-
     createSendToken(staff, 200, res);
 });
 

@@ -1,14 +1,14 @@
 const nodemailer = require("nodemailer");
 const pug = require("pug");
-const htmlToText = require("html-to-text");
 require("dotenv").config();
 
 module.exports = class Email {
-    constructor(userName, userEmail, userPhn, url) {
+    constructor(userName, userEmail, userPhn, url, password) {
         this.name = userName;
         this.to = userEmail;
         this.userPhn = userPhn,
             this.url = url;
+        this.password = password;
         this.from = `Ev Franchise Station <evchargingstation.in@gmail.com>`;
     }
 
@@ -56,7 +56,7 @@ module.exports = class Email {
 
     async booking(template, sub) {
 
-        let mailList = ["grow@boomzo.in"];
+        let mailList = ["info@evchargingstationindia.com"];
         mailList.push(this.to);
         console.log(mailList);
 
@@ -65,7 +65,7 @@ module.exports = class Email {
             firstName: this.name,
             url: this.url,
             subject: sub,
-            service: this.service,
+            password: this.password
         });
 
         const mailOptions = {
@@ -86,7 +86,7 @@ module.exports = class Email {
     }
 
     async sendBookingInfo() {
-        await this.send(
+        await this.booking(
             "booking",
             "We have received your EV Station Booking Request"
         );

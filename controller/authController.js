@@ -77,7 +77,18 @@ exports.userSignup = catchAsync(async (req, res, next) => {
         return next(new AppError("Couldnt create user!!"))
     }
 
-    createSendToken(newUser, 201, res);
+    console.log(newUser.tempPassword);
+
+    try {
+        await new Email(newUser.name, newUser.email, newUser.phone, "https://evchargingstationindia.com/login", newUser.tempPassword).sendBookingInfo();
+
+        createSendToken(newUser, 201, res);
+    } catch {
+        return next(
+            new AppError("There was an error sending the email. Try again later!"),
+            500
+        );
+    }
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -174,8 +185,6 @@ exports.staffSignup = catchAsync(async (req, res, next) => {
             new AppError("Please provide all information for creating an account!!", 400)
         );
     }
-
-    // console.log(req.body);
 
     const newStaff = await StaffModel.create({
         name,
@@ -274,7 +283,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
         console.log(resetURL);
         console.log(user);
-        await new Email(user.name, user.email, user.phone, resetURL).sendPasswordReset();
+        await new Email(user.name, user.email, user.phone, resetURL, "").sendPasswordReset();
 
         res.status(200).json({
             status: "success",

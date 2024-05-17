@@ -154,21 +154,61 @@ exports.protect = catchAsync(async (req, res, next) => {
     next();
 });
 
-// reset password
-exports.resetPassword = catchAsync(async (req, res, next) => {
-    const { tempPassword, password } = req.body;
+exports.userForgotPassword = catchAsync(async (req, res, next) => {
+    // 1) Get user based on POSTed email
+    const user = await UserModel.findOne({ email: req.body.email });
+    if (!user) {
+        return next(new AppError("There is no user with email address.", 404));
+    }
+
+    // 2) Generate the random reset token
+    const resetToken = user.createPasswordResetToken();
+    await user.save({ validateBeforeSave: false });
+
+    // console.log(process.env.NODE_ENV);
+
+    // 3) Send it to user's email
+    try {
+        const resetURL = `http://localhost:3000/reset-password/${resetToken}`
+
+        console.log(resetURL);
+        console.log(user);
+        await new Email(user.name, user.email, user.phone, resetURL, "").sendPasswordReset();
+
+        res.status(200).json({
+            status: "success",
+            message: "Token sent to email!",
+        });
+    } catch (err) {
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        await user.save({ validateBeforeSave: false });
+
+        return next(
+            new AppError("There was an error sending the email. Try again later!"),
+            500
+        );
+    }
+});
+
+exports.userResetPassword = catchAsync(async (req, res, next) => {
+    // 1) Get user based on the token
+    const hashedToken = crypto
+        .createHash("sha256")
+        .update(req.params.token)
+        .digest("hex");
 
     const user = await UserModel.findOne({
-        tempPassword
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: Date.now() },
     });
 
     if (!user) {
-        return next(new AppError("There isnt any account with this password", 400));
+        return next(new AppError("Token is invalid or has expired", 400));
     }
-
-    user.password = password;
-    // user.tempPassword = te;
-
+    user.password = req.body.password;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
     await user.save();
 
     createSendToken(user, 200, res);
@@ -264,7 +304,7 @@ exports.protectStaff = catchAsync(async (req, res, next) => {
 });
 
 
-exports.forgotPassword = catchAsync(async (req, res, next) => {
+exports.staffForgotPassword = catchAsync(async (req, res, next) => {
     // 1) Get user based on POSTed email
     const user = await StaffModel.findOne({ email: req.body.email });
     if (!user) {
@@ -301,7 +341,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     }
 });
 
-exports.resetPassword = catchAsync(async (req, res, next) => {
+exports.staffResetPassword = catchAsync(async (req, res, next) => {
     // 1) Get user based on the token
     const hashedToken = crypto
         .createHash("sha256")

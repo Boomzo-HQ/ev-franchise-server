@@ -169,7 +169,7 @@ exports.userForgotPassword = catchAsync(async (req, res, next) => {
 
     // 3) Send it to user's email
     try {
-        const resetURL = `http://localhost:3000/reset-password/${resetToken}`
+        const resetURL = `https://evchargingstationindia.com/reset-password/${resetToken}`
 
         console.log(resetURL);
         console.log(user);
@@ -319,7 +319,7 @@ exports.staffForgotPassword = catchAsync(async (req, res, next) => {
 
     // 3) Send it to user's email
     try {
-        const resetURL = `http://localhost:5173/reset-password/${resetToken}`
+        const resetURL = `https://evportal.vercel.app/reset-password/${resetToken}`
 
         console.log(resetURL);
         console.log(user);
